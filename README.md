@@ -1,2 +1,2 @@
-# TestPOC
-Poc for JSP
+# card management application
+Poc for card management
