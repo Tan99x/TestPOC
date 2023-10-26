@@ -2,7 +2,6 @@ package com.bw.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -94,13 +93,12 @@ public class TodoController {
 	private String insertTodo(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException {
 
-		String title = request.getParameter("title");
-		String username = request.getParameter("username");
-		String description = request.getParameter("description");
-
-		boolean isDone = Boolean.valueOf(request.getParameter("isDone"));
-		Todo newTodo = new Todo(title, username, description, LocalDate.now(), isDone);
-		TodoDaoImpl.getInstance().insertTodo(newTodo);
+		String cardNumber = request.getParameter("cardNumber");
+		String cardExpiry = request.getParameter("cardExpiry");
+		String cvv = request.getParameter("cvv");
+		String cardHolderName = request.getParameter("cardHolderName");
+		Todo todo = new Todo(cardNumber, cardExpiry, cvv, cardHolderName);
+		TodoDaoImpl.getInstance().insertTodo(todo);
 		List<Todo> listTodo = TodoDaoImpl.getInstance().selectAllTodos();
 		request.setAttribute("listTodo", listTodo);
 		return "todo-list";
@@ -108,16 +106,12 @@ public class TodoController {
 
 	private String updateTodo(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-
-		String title = request.getParameter("title");
-		String username = request.getParameter("username");
-		String description = request.getParameter("description");
-		// DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-mm-dd");
-		LocalDate targetDate = LocalDate.parse(request.getParameter("targetDate"));
-
-		boolean isDone = Boolean.valueOf(request.getParameter("isDone"));
-		Todo updateTodo = new Todo(id, title, username, description, targetDate, isDone);
+		Long id = Long.parseLong(request.getParameter("id"));
+		String cardNumber = request.getParameter("cardNumber");
+		String cardExpiry = request.getParameter("cardExpiry");
+		String cvv = request.getParameter("cvv");
+		String cardHolderName = request.getParameter("cardHolderName");
+		Todo updateTodo = new Todo(id, cardNumber, cardExpiry, cvv, cardHolderName);
 
 		TodoDaoImpl.getInstance().updateTodo(updateTodo);
 

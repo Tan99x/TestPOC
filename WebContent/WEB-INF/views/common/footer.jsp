@@ -11,7 +11,7 @@
 
 <footer class="footer font-small black">
     <!-- Copyright -->
-  <div class="footer-copyright text-center py-3" style="color: white">© 2019 Copyright:
+  <div class="footer-copyright text-center py-3" style="color: white">© 2023 Copyright:
         <a href="https://www.bw.net/" > <strong> Best Western </strong></a>
       </div>
 </footer>

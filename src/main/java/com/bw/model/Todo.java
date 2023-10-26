@@ -1,43 +1,37 @@
 package com.bw.model;
 
-import java.time.LocalDate;
-
 /**
  * Todo.java This is a model class represents a Todo entity
  * 
- * @author Ramesh Fadatare
  *
  */
 public class Todo {
 
 	private Long id;
-	private String title;
-	private String username;
-	private String description;
-	private LocalDate targetDate;
-	private boolean status;
+	private String cardNumber;
+	private String cardExpiry;
+	private String cvv;
+	private String cardHolderName;
+
+	public Todo(Long id, String cardNumber, String cardExpiry, String cvv, String cardHolderName) {
+		super();
+		this.id = id;
+		this.cardNumber = cardNumber;
+		this.cardExpiry = cardExpiry;
+		this.cvv = cvv;
+		this.cardHolderName = cardHolderName;
+	}
+
+	public Todo(String cardNumber, String cardExpiry, String cvv, String cardHolderName) {
+		super();
+		this.cardNumber = cardNumber;
+		this.cardExpiry = cardExpiry;
+		this.cvv = cvv;
+		this.cardHolderName = cardHolderName;
+	}
 
 	protected Todo() {
 
-	}
-
-	public Todo(long id, String title, String username, String description, LocalDate targetDate, boolean isDone) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.username = username;
-		this.description = description;
-		this.targetDate = targetDate;
-		this.status = isDone;
-	}
-
-	public Todo(String title, String username, String description, LocalDate targetDate, boolean isDone) {
-		super();
-		this.title = title;
-		this.username = username;
-		this.description = description;
-		this.targetDate = targetDate;
-		this.status = isDone;
 	}
 
 	public Long getId() {
@@ -48,65 +42,36 @@ public class Todo {
 		this.id = id;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getCardNumber() {
+		return cardNumber;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getCardExpiry() {
+		return cardExpiry;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setCardExpiry(String cardExpiry) {
+		this.cardExpiry = cardExpiry;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getCvv() {
+		return cvv;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setCvv(String cvv) {
+		this.cvv = cvv;
 	}
 
-	public LocalDate getTargetDate() {
-		return targetDate;
+	public String getCardHolderName() {
+		return cardHolderName;
 	}
 
-	public void setTargetDate(LocalDate targetDate) {
-		this.targetDate = targetDate;
+	public void setCardHolderName(String cardHolderName) {
+		this.cardHolderName = cardHolderName;
 	}
 
-	public boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Todo other = (Todo) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
 }

@@ -48,27 +48,26 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>Title</th>
-						<th>Target Date</th>
-						<th>Card Status</th>
-						<th>Actions</th>
+						<th>Card Number</th>
+						<th>Card Expiry</th>
+						<th>Cvv</th>
+						<th>Card Holder Name</th>
 					</tr>
 				</thead>
 				<tbody>
 					<!--   for (Todo todo: todos) {  -->
 					<c:forEach var="todo" items="${listTodo}">
-
 						<tr>
-							<td><c:out value="${todo.title}" /></td>
-							<td><c:out value="${todo.targetDate}" /></td>
-							<td><c:out value="${todo.status}" /></td>
+							<td><c:out value="${todo.cardNumber}" /></td>
+							<td><c:out value="${todo.cardExpiry}" /></td>
+							<td><c:out value="${todo.cvv}" /></td>
+							<td><c:out value="${todo.cardHolderName}" /></td>
 
 							<td><a href="edit?id=<c:out value='${todo.id}' />">Edit</a>
 								&nbsp;&nbsp;&nbsp;&nbsp; <a
-								href="delete?id=<c:out value='${todo.id}' />">Delete</a></td>
-
-							<!--  <td><button (click)="updateTodo(todo.id)" class="btn btn-success">Update</button>
-          							<button (click)="deleteTodo(todo.id)" class="btn btn-warning">Delete</button></td> -->
+								href="delete?id=<c:out value='${todo.id}' />">Delete</a>
+								&nbsp;&nbsp;&nbsp;&nbsp; <a
+								href="autherise?id=<c:out value='${todo.id}' />">Autherise</a></td>
 						</tr>
 					</c:forEach>
 					<!-- } -->

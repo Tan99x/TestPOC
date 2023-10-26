@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import com.bw.utils.DBUtils;
  * This DAO class provides CRUD database operations for the table todos in the
  * database.
  * 
- * @author Ramesh Fadatare
  *
  */
 
@@ -23,13 +21,13 @@ public class TodoDaoImpl {
 
 	private static TodoDaoImpl todoDaoImpl;
 
-	private static final String INSERT_TODOS_SQL = "INSERT INTO todos"
-			+ "  (title, username, description, target_date,  is_done) VALUES " + " (?, ?, ?, ?, ?);";
+	private static final String INSERT_TODOS_SQL = "INSERT INTO card_details "
+			+ "  (cardNumber, cardExpiry, cvv, cardHolderName) VALUES " + " (?, ?, ?, ?);";
 
-	private static final String SELECT_TODO_BY_ID = "select id,title,username,description,target_date,is_done from todos where id =?";
-	private static final String SELECT_ALL_TODOS = "select * from todos";
-	private static final String DELETE_TODO_BY_ID = "delete from todos where id = ?;";
-	private static final String UPDATE_TODO = "update todos set title = ?, username= ?, description =?, target_date =?, is_done = ? where id = ?;";
+	private static final String SELECT_TODO_BY_ID = "select id, cardNumber, cardExpiry, cvv, cardHolderName from card_details  where id =?";
+	private static final String SELECT_ALL_TODOS = "select * from card_details ";
+	private static final String DELETE_TODO_BY_ID = "delete from card_details  where id = ?;";
+	private static final String UPDATE_TODO = "update card_details  set cardNumber = ?, cardExpiry= ?, cvv =?, cardHolderName =?, where id = ?;";
 
 	private TodoDaoImpl() {
 	}
@@ -46,11 +44,10 @@ public class TodoDaoImpl {
 		System.out.println(INSERT_TODOS_SQL);
 		// try-with-resource statement will auto close the connection.
 		try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TODOS_SQL)) {
-			preparedStatement.setString(1, todo.getTitle());
-			preparedStatement.setString(2, todo.getUsername());
-			preparedStatement.setString(3, todo.getDescription());
-			preparedStatement.setDate(4, DBUtils.getSQLDate(todo.getTargetDate()));
-			preparedStatement.setBoolean(5, todo.getStatus());
+			preparedStatement.setString(1, todo.getCardNumber());
+			preparedStatement.setString(2, todo.getCardExpiry());
+			preparedStatement.setString(3, todo.getCvv());
+			preparedStatement.setString(4, todo.getCardHolderName());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException exception) {
@@ -73,12 +70,11 @@ public class TodoDaoImpl {
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
 				long id = rs.getLong("id");
-				String title = rs.getString("title");
-				String username = rs.getString("username");
-				String description = rs.getString("description");
-				LocalDate targetDate = rs.getDate("target_date").toLocalDate();
-				boolean isDone = rs.getBoolean("is_done");
-				todo = new Todo(id, title, username, description, targetDate, isDone);
+				String cardNumber = rs.getString("cardNumber");
+				String cardExpiry = rs.getString("cardExpiry");
+				String cvv = rs.getString("cvv");
+				String cardHolderName = rs.getString("cardHolderName");
+				todo = new Todo(id, cardNumber, cardExpiry, cvv, cardHolderName);
 			}
 		} catch (SQLException exception) {
 			DBUtils.printSQLException(exception);
@@ -100,12 +96,12 @@ public class TodoDaoImpl {
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
 				long id = rs.getLong("id");
-				String title = rs.getString("title");
-				String username = rs.getString("username");
-				String description = rs.getString("description");
-				LocalDate targetDate = rs.getDate("target_date").toLocalDate();
-				boolean isDone = rs.getBoolean("is_done");
-				todos.add(new Todo(id, title, username, description, targetDate, isDone));
+				String cardNumber = rs.getString("cardNumber");
+				String cardExpiry = rs.getString("cardExpiry");
+				String cvv = rs.getString("cvv");
+				String cardHolderName = rs.getString("cardHolderName");
+				Todo todo = new Todo(id, cardNumber, cardExpiry, cvv, cardHolderName);
+				todos.add(todo);
 			}
 		} catch (SQLException exception) {
 			DBUtils.printSQLException(exception);
@@ -127,14 +123,13 @@ public class TodoDaoImpl {
 	public boolean updateTodo(Todo todo) throws SQLException {
 		Connection connection = DBUtils.setupDB();
 		boolean rowUpdated;
-		try (PreparedStatement statement = connection.prepareStatement(UPDATE_TODO);) {
-			statement.setString(1, todo.getTitle());
-			statement.setString(2, todo.getUsername());
-			statement.setString(3, todo.getDescription());
-			statement.setDate(4, DBUtils.getSQLDate(todo.getTargetDate()));
-			statement.setBoolean(5, todo.getStatus());
-			statement.setLong(6, todo.getId());
-			rowUpdated = statement.executeUpdate() > 0;
+		try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_TODO);) {
+			preparedStatement.setString(1, todo.getCardNumber());
+			preparedStatement.setString(2, todo.getCardExpiry());
+			preparedStatement.setString(3, todo.getCvv());
+			preparedStatement.setString(4, todo.getCardHolderName());
+			preparedStatement.setLong(5, todo.getId());
+			rowUpdated = preparedStatement.executeUpdate() > 0;
 		}
 		return rowUpdated;
 	}
