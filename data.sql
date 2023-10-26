@@ -11,6 +11,9 @@ CREATE TABLE IF NOT EXISTS users (
   PRIMARY KEY (id)
 );
 
+INSERT INTO users (first_name, last_name, username, password )
+values ('first', 'last', 'admin', 'admin123');
+
 
 CREATE TABLE IF NOT EXISTS todos (
   id BIGINT NOT NULL AUTO_INCREMENT,
