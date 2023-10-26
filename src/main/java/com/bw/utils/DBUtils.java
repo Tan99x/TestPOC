@@ -1,7 +1,9 @@
 package com.bw.utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -60,7 +62,9 @@ public class DBUtils {
 		try {
 			Class.forName("org.h2.Driver");
 			connection = getConnection();
-			RunScript.execute(connection, new FileReader("data.sql"));
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			File file = new File(classloader.getResource("data.sql").getFile());
+			RunScript.execute(connection, new FileReader(file));
 		} catch (FileNotFoundException | SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
