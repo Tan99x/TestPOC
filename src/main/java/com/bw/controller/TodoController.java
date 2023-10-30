@@ -98,7 +98,7 @@ public class TodoController {
 	public String callAutheriseApi(String reqBody) {
 		String resp = null;
 		try {
-			URL obj = new URL("http://");
+			URL obj = new URL("http://localhost:8080/processCard");
 			HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setRequestProperty("Content-Type", "application/json");
@@ -112,7 +112,6 @@ public class TodoController {
 
 			int responseCode = httpURLConnection.getResponseCode();
 			System.out.println("POST Response Code :: " + responseCode);
-
 			if (responseCode == HttpURLConnection.HTTP_OK) { // success
 				BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
 				String inputLine;

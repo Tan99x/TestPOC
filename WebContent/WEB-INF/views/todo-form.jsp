@@ -59,13 +59,13 @@
 				<fieldset class="form-group">
 					<label>Card Number</label> <input type="text"
 						value="<c:out value='${todo.cardNumber}' />" class="form-control"
-						name="cardNumber" required="required" minlength="16">
+						name="cardNumber" required="required" minlength="12">
 				</fieldset>
 
 				<fieldset class="form-group">
 					<label>Card Expiry</label> <input type="text"
 						value="<c:out value='${todo.cardExpiry}' />" class="form-control"
-						name="cardExpiry" minlength="6">
+						name="cardExpiry" minlength="4">
 				</fieldset>
 
 				<fieldset class="form-group">
