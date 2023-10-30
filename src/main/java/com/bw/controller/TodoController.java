@@ -1,6 +1,11 @@
 package com.bw.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
@@ -15,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bw.dao.TodoDaoImpl;
+import com.bw.model.CardDetails;
+import com.bw.model.CardInfoRequest;
 import com.bw.model.Todo;
+import com.bw.utils.CommonUtils;
 
 /**
  * ControllerServlet.java This servlet acts as a page controller for the
@@ -69,6 +77,62 @@ public class TodoController {
 		} catch (SQLException ex) {
 			throw new ServletException(ex);
 		}
+	}
+
+	@RequestMapping(value = "/autherise", method = RequestMethod.GET)
+	public String autherise(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) {
+		int id = Integer.parseInt(request.getParameter("id"));
+		Todo existingTodo = TodoDaoImpl.getInstance().selectTodo(id);
+		CardInfoRequest cinfo = new CardInfoRequest();
+		CardDetails cardDetails = new CardDetails();
+		cardDetails.setCardholderName(existingTodo.getCardHolderName());
+		cardDetails.setCardNumber(existingTodo.getCardNumber());
+		cardDetails.setSecurityCode(existingTodo.getCvv());
+		cardDetails.setExpiryDate(existingTodo.getCardExpiry());
+		cinfo.setCardDetails(cardDetails);
+		String reqBody = CommonUtils.dumpObject(cinfo);
+		String resp = callAutheriseApi(reqBody);
+		return resp;
+	}
+
+	public String callAutheriseApi(String reqBody) {
+		String resp = null;
+		try {
+			URL obj = new URL("http://");
+			HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
+			httpURLConnection.setRequestMethod("POST");
+			httpURLConnection.setRequestProperty("Content-Type", "application/json");
+
+			// For POST only - START
+			httpURLConnection.setDoOutput(true);
+			OutputStream os = httpURLConnection.getOutputStream();
+			os.write(reqBody.getBytes());
+			os.flush();
+			os.close();
+
+			int responseCode = httpURLConnection.getResponseCode();
+			System.out.println("POST Response Code :: " + responseCode);
+
+			if (responseCode == HttpURLConnection.HTTP_OK) { // success
+				BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+				String inputLine;
+				StringBuffer response = new StringBuffer();
+
+				while ((inputLine = in.readLine()) != null) {
+					response.append(inputLine);
+				}
+				in.close();
+
+				// print result
+				resp = response.toString();
+				System.out.println(response.toString());
+			} else {
+				System.out.println("POST request not worked");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return resp;
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
