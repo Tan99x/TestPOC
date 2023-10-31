@@ -21,5 +21,6 @@ CREATE TABLE IF NOT EXISTS card_details (
   cardExpiry varchar(255) DEFAULT NULL,
   cvv varchar(255) DEFAULT NULL,
   cardHolderName varchar(255) DEFAULT NULL,
+  amount varchar(255) DEFAULT NULL,
   PRIMARY KEY (id)
 );

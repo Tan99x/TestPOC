@@ -52,6 +52,7 @@
 						<th>Card Expiry</th>
 						<th>Cvv</th>
 						<th>Card Holder Name</th>
+						<th>Amount</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -62,6 +63,7 @@
 							<td><c:out value="${todo.cardExpiry}" /></td>
 							<td><c:out value="${todo.cvv}" /></td>
 							<td><c:out value="${todo.cardHolderName}" /></td>
+							<td><c:out value="${todo.amount}" /></td>
 
 							<td><a href="edit?id=<c:out value='${todo.id}' />">Edit</a>
 								&nbsp;&nbsp;&nbsp;&nbsp; <a

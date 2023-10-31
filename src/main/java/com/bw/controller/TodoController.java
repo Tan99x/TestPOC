@@ -90,6 +90,8 @@ public class TodoController {
 		cardDetails.setSecurityCode(existingTodo.getCvv());
 		cardDetails.setExpiryDate(existingTodo.getCardExpiry());
 		cinfo.setCardDetails(cardDetails);
+		cinfo.setTransactionType("Payment");
+		cinfo.setAmount(request.getParameter("amount"));
 		String reqBody = CommonUtils.dumpObject(cinfo);
 		String resp = callAutheriseApi(reqBody);
 		return resp;
@@ -160,7 +162,8 @@ public class TodoController {
 		String cardExpiry = request.getParameter("cardExpiry");
 		String cvv = request.getParameter("cvv");
 		String cardHolderName = request.getParameter("cardHolderName");
-		Todo todo = new Todo(cardNumber, cardExpiry, cvv, cardHolderName);
+		String amount = request.getParameter("amount");
+		Todo todo = new Todo(cardNumber, cardExpiry, cvv, cardHolderName, amount);
 		TodoDaoImpl.getInstance().insertTodo(todo);
 		List<Todo> listTodo = TodoDaoImpl.getInstance().selectAllTodos();
 		request.setAttribute("listTodo", listTodo);
@@ -174,7 +177,9 @@ public class TodoController {
 		String cardExpiry = request.getParameter("cardExpiry");
 		String cvv = request.getParameter("cvv");
 		String cardHolderName = request.getParameter("cardHolderName");
-		Todo updateTodo = new Todo(id, cardNumber, cardExpiry, cvv, cardHolderName);
+		String amount = request.getParameter("amount");
+
+		Todo updateTodo = new Todo(id, cardNumber, cardExpiry, cvv, cardHolderName, amount);
 
 		TodoDaoImpl.getInstance().updateTodo(updateTodo);
 

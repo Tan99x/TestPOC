@@ -12,22 +12,25 @@ public class Todo {
 	private String cardExpiry;
 	private String cvv;
 	private String cardHolderName;
+	private String amount;
 
-	public Todo(Long id, String cardNumber, String cardExpiry, String cvv, String cardHolderName) {
+	public Todo(Long id, String cardNumber, String cardExpiry, String cvv, String cardHolderName, String amount) {
 		super();
 		this.id = id;
 		this.cardNumber = cardNumber;
 		this.cardExpiry = cardExpiry;
 		this.cvv = cvv;
 		this.cardHolderName = cardHolderName;
+		this.amount = amount;
 	}
 
-	public Todo(String cardNumber, String cardExpiry, String cvv, String cardHolderName) {
+	public Todo(String cardNumber, String cardExpiry, String cvv, String cardHolderName, String amount) {
 		super();
 		this.cardNumber = cardNumber;
 		this.cardExpiry = cardExpiry;
 		this.cvv = cvv;
 		this.cardHolderName = cardHolderName;
+		this.amount = amount;
 	}
 
 	protected Todo() {
@@ -48,6 +51,14 @@ public class Todo {
 
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
 
 	public String getCardExpiry() {

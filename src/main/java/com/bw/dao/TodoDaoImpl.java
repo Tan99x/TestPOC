@@ -22,12 +22,12 @@ public class TodoDaoImpl {
 	private static TodoDaoImpl todoDaoImpl;
 
 	private static final String INSERT_TODOS_SQL = "INSERT INTO card_details "
-			+ "  (cardNumber, cardExpiry, cvv, cardHolderName) VALUES " + " (?, ?, ?, ?);";
+			+ "  (cardNumber, cardExpiry, cvv, cardHolderName, amount) VALUES " + " (?, ?, ?, ?, ?);";
 
-	private static final String SELECT_TODO_BY_ID = "select id, cardNumber, cardExpiry, cvv, cardHolderName from card_details  where id =?";
+	private static final String SELECT_TODO_BY_ID = "select id, cardNumber, cardExpiry, cvv, cardHolderName, amount from card_details  where id =?";
 	private static final String SELECT_ALL_TODOS = "select * from card_details ";
 	private static final String DELETE_TODO_BY_ID = "delete from card_details  where id = ?;";
-	private static final String UPDATE_TODO = "update card_details  set cardNumber = ?, cardExpiry= ?, cvv =?, cardHolderName =?, where id = ?;";
+	private static final String UPDATE_TODO = "update card_details  set cardNumber = ?, cardExpiry= ?, cvv =?, cardHolderName =?, amount =? where id = ?;";
 
 	private TodoDaoImpl() {
 	}
@@ -48,6 +48,7 @@ public class TodoDaoImpl {
 			preparedStatement.setString(2, todo.getCardExpiry());
 			preparedStatement.setString(3, todo.getCvv());
 			preparedStatement.setString(4, todo.getCardHolderName());
+			preparedStatement.setString(5, todo.getAmount());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException exception) {
@@ -74,7 +75,8 @@ public class TodoDaoImpl {
 				String cardExpiry = rs.getString("cardExpiry");
 				String cvv = rs.getString("cvv");
 				String cardHolderName = rs.getString("cardHolderName");
-				todo = new Todo(id, cardNumber, cardExpiry, cvv, cardHolderName);
+				String amount = rs.getString("amount");
+				todo = new Todo(id, cardNumber, cardExpiry, cvv, cardHolderName, amount);
 			}
 		} catch (SQLException exception) {
 			DBUtils.printSQLException(exception);
@@ -100,7 +102,8 @@ public class TodoDaoImpl {
 				String cardExpiry = rs.getString("cardExpiry");
 				String cvv = rs.getString("cvv");
 				String cardHolderName = rs.getString("cardHolderName");
-				Todo todo = new Todo(id, cardNumber, cardExpiry, cvv, cardHolderName);
+				String amount = rs.getString("amount");
+				Todo todo = new Todo(id, cardNumber, cardExpiry, cvv, cardHolderName, amount);
 				todos.add(todo);
 			}
 		} catch (SQLException exception) {
@@ -128,7 +131,8 @@ public class TodoDaoImpl {
 			preparedStatement.setString(2, todo.getCardExpiry());
 			preparedStatement.setString(3, todo.getCvv());
 			preparedStatement.setString(4, todo.getCardHolderName());
-			preparedStatement.setLong(5, todo.getId());
+			preparedStatement.setString(5, todo.getAmount());
+			preparedStatement.setLong(6, todo.getId());
 			rowUpdated = preparedStatement.executeUpdate() > 0;
 		}
 		return rowUpdated;
