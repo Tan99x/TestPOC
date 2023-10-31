@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bw.dao.TodoDaoImpl;
+import com.bw.model.AutheriseResponse;
 import com.bw.model.CardDetails;
 import com.bw.model.CardInfoRequest;
 import com.bw.model.Todo;
 import com.bw.utils.CommonUtils;
+import com.google.gson.Gson;
 
 /**
  * ControllerServlet.java This servlet acts as a page controller for the
@@ -81,6 +83,7 @@ public class TodoController {
 
 	@RequestMapping(value = "/autherise", method = RequestMethod.GET)
 	public String autherise(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) {
+		Gson gson = new Gson();
 		int id = Integer.parseInt(request.getParameter("id"));
 		Todo existingTodo = TodoDaoImpl.getInstance().selectTodo(id);
 		CardInfoRequest cinfo = new CardInfoRequest();
@@ -91,9 +94,13 @@ public class TodoController {
 		cardDetails.setExpiryDate(existingTodo.getCardExpiry());
 		cinfo.setCardDetails(cardDetails);
 		cinfo.setTransactionType("Payment");
-		cinfo.setAmount(request.getParameter("amount"));
+		cinfo.setAmount(existingTodo.getAmount());
 		String reqBody = CommonUtils.dumpObject(cinfo);
 		String resp = callAutheriseApi(reqBody);
+		AutheriseResponse autheriseResponse = gson.fromJson(resp, AutheriseResponse.class);
+		if (autheriseResponse.getErrorCode().equals("200")) {
+			return "Autherised successfully";
+		}
 		return resp;
 	}
 
