@@ -23,6 +23,7 @@ import com.bw.dao.TodoDaoImpl;
 import com.bw.model.AutheriseResponse;
 import com.bw.model.CardDetails;
 import com.bw.model.CardInfoRequest;
+import com.bw.model.RefundRequestDTO;
 import com.bw.model.Todo;
 import com.bw.utils.CommonUtils;
 import com.google.gson.Gson;
@@ -40,6 +41,11 @@ public class TodoController {
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public String newTodo(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) {
 		return "todo-form";
+	}
+
+	@RequestMapping(value = "/refundPage", method = RequestMethod.GET)
+	public String refundPage(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) {
+		return "refund-form";
 	}
 
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
@@ -93,21 +99,39 @@ public class TodoController {
 		cardDetails.setSecurityCode(existingTodo.getCvv());
 		cardDetails.setExpiryDate(existingTodo.getCardExpiry());
 		cinfo.setCardDetails(cardDetails);
-		cinfo.setTransactionType("Payment");
 		cinfo.setAmount(existingTodo.getAmount());
 		String reqBody = CommonUtils.dumpObject(cinfo);
-		String resp = callAutheriseApi(reqBody);
+		String resp = callApi(reqBody, "http://localhost:8080/process-card");
 		AutheriseResponse autheriseResponse = gson.fromJson(resp, AutheriseResponse.class);
 		if (autheriseResponse.getErrorCode().equals("200")) {
-			return "Autherised successfully";
+			request.setAttribute("confirmMsg",
+					"Autherisation completed succesfully with amount " + autheriseResponse.getData().getAmount()
+							+ " transactionId" + autheriseResponse.getData().getTransactionId());
 		}
-		return resp;
+		return "confirmationPage";
 	}
 
-	public String callAutheriseApi(String reqBody) {
+	@RequestMapping(value = "/refund", method = RequestMethod.POST)
+	public String refund(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		Gson gson = new Gson();
+		RefundRequestDTO refundRequestDTO = new RefundRequestDTO();
+		refundRequestDTO.setAmount(request.getParameter("amount"));
+		refundRequestDTO.setTransactionId(request.getParameter("transactionId"));
+		refundRequestDTO.setDesc(request.getParameter("desc"));
+		String reqBody = CommonUtils.dumpObject(refundRequestDTO);
+		String resp = callApi(reqBody, "http://localhost:8080/process-refund");
+		AutheriseResponse autheriseResponse = gson.fromJson(resp, AutheriseResponse.class);
+		if (autheriseResponse.getErrorCode().equals("200")) {
+			request.setAttribute("confirmMsg", "Refund completed succesfully");
+		}
+		return "confirmationPage";
+	}
+
+	public String callApi(String reqBody, String url) {
 		String resp = null;
 		try {
-			URL obj = new URL("http://localhost:8080/processCard");
+			URL obj = new URL(url);
 			HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setRequestProperty("Content-Type", "application/json");

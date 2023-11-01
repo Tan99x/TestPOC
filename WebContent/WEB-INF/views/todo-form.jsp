@@ -42,50 +42,51 @@
 				</c:if>
 
 				<caption>
-					<h2>
+					<h4>
 						<c:if test="${todo != null}">
             			Edit Card
             		</c:if>
 						<c:if test="${todo == null}">
             			Add New Card
             		</c:if>
-					</h2>
+					</h4>
 				</caption>
 
 				<c:if test="${todo != null}">
 					<input type="hidden" name="id" value="<c:out value='${todo.id}' />" />
 				</c:if>
 
-				<fieldset class="form-group">
+				<fieldset>
 					<label>Card Number</label> <input type="text"
 						value="<c:out value='${todo.cardNumber}' />" class="form-control"
 						name="cardNumber" required="required" minlength="12">
 				</fieldset>
 
-				<fieldset class="form-group">
+				<fieldset>
 					<label>Card Expiry</label> <input type="text"
 						value="<c:out value='${todo.cardExpiry}' />" class="form-control"
 						name="cardExpiry" minlength="4">
 				</fieldset>
 
-				<fieldset class="form-group">
+				<fieldset>
 					<label>Cvv</label> <input type="text"
 						value="<c:out value='${todo.cvv}' />" class="form-control"
 						name="cvv" minlength="3">
 				</fieldset>
 
 
-				<fieldset class="form-group">
+				<fieldset>
 					<label>Card Holder Name</label> <input type="text"
 						value="<c:out value='${todo.cardHolderName}' />"
 						class="form-control" name="cardHolderName" minlength="4">
 				</fieldset>
 
-				<fieldset class="form-group">
+				<fieldset>
 					<label>Amount</label> <input type="text"
 						value="<c:out value='${todo.amount}' />" class="form-control"
 						name="amount">
 				</fieldset>
+
 
 				<button type="submit" class="btn btn-success">Save</button>
 				</form>

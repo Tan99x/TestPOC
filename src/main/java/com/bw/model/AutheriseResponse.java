@@ -17,6 +17,7 @@ public class AutheriseResponse implements Serializable {
 	private String errorCode;
 	private String errorMsg;
 	private String details;
+	private Data data;
 
 	public String getErrorCode() {
 		return errorCode;
@@ -40,6 +41,14 @@ public class AutheriseResponse implements Serializable {
 
 	public void setDetails(String details) {
 		this.details = details;
+	}
+
+	public Data getData() {
+		return data;
+	}
+
+	public void setData(Data data) {
+		this.data = data;
 	}
 
 }
