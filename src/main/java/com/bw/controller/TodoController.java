@@ -104,9 +104,8 @@ public class TodoController {
 		String resp = callApi(reqBody, "http://localhost:8080/process-card");
 		AutheriseResponse autheriseResponse = gson.fromJson(resp, AutheriseResponse.class);
 		if (autheriseResponse.getErrorCode().equals("200")) {
-			request.setAttribute("confirmMsg",
-					"Autherisation completed succesfully with amount " + autheriseResponse.getData().getAmount()
-							+ " transactionId" + autheriseResponse.getData().getTransactionId());
+			request.setAttribute("confirmMsg", "Autherisation completed succesfully with transactionId"
+					+ autheriseResponse.getData().getTransactionId());
 		}
 		return "confirmationPage";
 	}
@@ -123,7 +122,8 @@ public class TodoController {
 		String resp = callApi(reqBody, "http://localhost:8080/process-refund");
 		AutheriseResponse autheriseResponse = gson.fromJson(resp, AutheriseResponse.class);
 		if (autheriseResponse.getErrorCode().equals("200")) {
-			request.setAttribute("confirmMsg", "Refund completed succesfully");
+			request.setAttribute("confirmMsg",
+					"Refund completed succesfully for transactionId " + refundRequestDTO.getTransactionId());
 		}
 		return "confirmationPage";
 	}
